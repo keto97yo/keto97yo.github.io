@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Louis Meiering – Portfolio</title>
+  <meta name="description" content="Portfolio von Louis Meiering – Design & Fotografie." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#e9e4df; --fg:#141413; --muted:#6f6a66; 
+      --accent:#ff3b2e; --accent-ink:#fff5f4; --card:#ffffff;
+      --gap:24px; --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg)}
+    h1,h2,h3{margin:0 0 10px 0;line-height:1.05}
+    p{margin:0 0 8px 0}
+    a{color:inherit}
+
+    .btn{appearance:none;border:none;background:var(--accent);color:#fff;padding:12px 16px;border-radius:999px;font-weight:800;letter-spacing:.02em;cursor:pointer;box-shadow:0 6px 20px rgba(255,59,46,.25)}
+    .chip{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;border:1.5px solid var(--fg);font-weight:700}
+
+    .scroller{display:flex;height:100vh;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth}
+    .section{min-width:100vw;height:100%;position:relative;scroll-snap-align:start;display:grid}
+
+    .corner{position:absolute;top:14px;left:18px;display:flex;gap:10px;align-items:center}
+    .dot{width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px var(--accent-ink)}
+    .chapter{font-weight:900;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+
+    .wrap{height:100%;display:grid;gap:var(--gap);padding:56px}
+    .card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 10px 28px rgba(0,0,0,.06)}
+
+    .nav{position:fixed;right:22px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:12px;z-index:40}
+    .nav button{width:16px;height:16px;aspect-ratio:1;border-radius:50%;border:2px solid var(--fg);background:var(--accent-ink);opacity:.6;cursor:pointer;transition:opacity .2s}
+    .nav button.active{opacity:1;background:var(--accent);border-color:var(--accent)}
+    .nav .label{position:absolute;right:22px;background:var(--fg);color:#fff;padding:6px 10px;border-radius:999px;font-size:12px;opacity:0;pointer-events:none;transform:translateX(8px);transition:.18s}
+    .nav button:hover + .label{opacity:1;transform:translateX(0)}
+
+    /* ABOUT */
+    #about .wrap{grid-template-columns:440px 1fr;align-items:center}
+    .avatar{border-radius:16px;aspect-ratio:3/4;object-fit:cover;width:100%;background:#d6d2cf}
+    .accent-block{background:var(--accent);color:#fff;border-radius:14px;padding:14px 16px;font-weight:800;letter-spacing:.03em;display:inline-block}
+
+    /* SKILLS – kompakter & Hobbys wieder drin */
+    #skills .wrap{grid-template-columns:1fr}
+    .skills-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+    .skill{background:#fff;border:1px solid #e6e1dc;border-radius:14px;padding:12px;display:grid;grid-template-columns:1fr 8px;gap:8px;align-items:center;min-height:92px}
+    .skill .icon{display:grid;place-items:center;aspect-ratio:1;border-radius:10px;background:var(--accent-ink);font-weight:900}
+    .bar{height:100%;width:8px;border-radius:8px;background:#eee;position:relative;overflow:hidden}
+    .bar::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:var(--val,60%);background:var(--accent)}
+    .hob-wrap{margin-top:12px}
+    .hob-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+    .hob{background:var(--accent-ink);border:1.5px solid var(--accent);border-radius:999px;padding:8px 10px;font-weight:700;text-align:center}
+
+    /* DESIGN */
+    #design .wrap{grid-template-columns:.8fr 1.2fr;align-items:center}
+    .slide-figure{background:#d9d5d1;border-radius:16px;display:grid;place-items:center;aspect-ratio:16/10;overflow:hidden}
+    .slide-figure img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+    .slide-controls{display:flex;gap:10px}
+    .ctrl{background:transparent;border:2px solid var(--fg);border-radius:999px;padding:8px 12px;font-weight:800;cursor:pointer}
+    .pill{display:inline-block;background:var(--accent);color:#fff;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:800}
+
+    /* FOTO – kleinere Kacheln, 12-Spalten, sm=2x2, big=3x3 */
+    #photo .wrap{grid-template-columns:1fr}
+    .grid-photo{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;grid-auto-flow:dense}
+    .sq{aspect-ratio:1;border-radius:10px;background:#cfcac6;overflow:hidden;position:relative}
+    .sq img{width:100%;height:100%;object-fit:cover}
+    .sm{grid-column:span 2;grid-row:span 2}
+    .big{grid-column:span 3;grid-row:span 3}
+    .accent{background:var(--accent);color:#fff;display:flex;align-items:flex-end}
+    .accent-inner{padding:14px}
+    .accent h3{margin:0 0 6px 0;font-size:18px}
+    .accent p{margin:0;color:#fff;opacity:.95}
+
+    /* KONTAKT */
+    #contact .wrap{grid-template-columns:1fr 1fr;align-items:center}
+    .thanks{font-size:clamp(36px,5vw,62px);font-weight:900;letter-spacing:-.01em}
+
+    @media (max-width:1100px){
+      #about .wrap,#skills .wrap,#design .wrap,#photo .wrap,#contact .wrap{grid-template-columns:1fr;align-content:start;overflow:auto}
+      .skills-grid{grid-template-columns:repeat(3,1fr)}
+      .hob-grid{grid-template-columns:repeat(3,1fr)}
+      .grid-photo{grid-template-columns:repeat(6,1fr)}
+    }
+  </style>
+</head>
+<body>
+  <div class="nav" aria-label="Seitennavigation">
+    <div style="position:relative"><button data-target="#about" class="active" aria-label="About"></button><span class="label">About</span></div>
+    <div style="position:relative"><button data-target="#skills" aria-label="Skills"></button><span class="label">Skills</span></div>
+    <div style="position:relative"><button data-target="#design" aria-label="Design"></button><span class="label">Design</span></div>
+    <div style="position:relative"><button data-target="#photo" aria-label="Fotografie"></button><span class="label">Fotos</span></div>
+    <div style="position:relative"><button data-target="#contact" aria-label="Kontakt"></button><span class="label">Kontakt</span></div>
+  </div>
+
+  <main class="scroller" id="scroller">
+    <!-- ABOUT (wir passen später exakt an deine Wunschversion an) -->
+    <section class="section" id="about" aria-label="About">
+      <div class="corner"><span class="dot"></span><span class="chapter">01 / ABOUT</span></div>
+      <div class="wrap">
+        <div class="card"><img class="avatar" src="https://placehold.co/900x1200" alt="Portrait (Platzhalter)" /></div>
+        <div>
+          <span class="accent-block">Louis Meiering</span>
+          <h1 style="font-size:clamp(34px,5vw,72px);margin-top:8px">Design & Fotografie</h1>
+          <p style="font-size:18px;max-width:58ch">Reduzierte Systeme, starke Typografie, klare Bilder. Konzeptstark und hands‑on – von Idee bis Output.</p>
+          <div style="height:18px"></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <span class="chip">Schleswig‑Holstein / Hamburg</span>
+            <span class="chip">Print & Digital</span>
+            <span class="chip">Markenauftritte</span>
+          </div>
+          <div style="height:16px"></div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+            <a class="btn" href="mailto:meiering.louis97@gmail.com">E‑Mail</a>
+            <span class="chip">+49 178 5300 541</span>
+            <span class="chip">meiering.louis97@gmail.com</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS (kompakter + Hobbys) -->
+    <section class="section" id="skills" aria-label="Skills">
+      <div class="corner"><span class="dot"></span><span class="chapter">02 / SKILLS</span></div>
+      <div class="wrap">
+        <div>
+          <h2 style="font-size:30px">Werkzeuge & Stärken</h2>
+          <p style="color:var(--muted)">Platzhalter‑Icons; ersetze sie durch Logos oder SVGs.</p>
+          <div class="skills-grid">
+            <div class="skill" style="--val:90%"><div class="icon">PS</div><div class="bar"></div></div>
+            <div class="skill" style="--val:85%"><div class="icon">AI</div><div class="bar"></div></div>
+            <div class="skill" style="--val:88%"><div class="icon">ID</div><div class="bar"></div></div>
+            <div class="skill" style="--val:70%"><div class="icon">LR</div><div class="bar"></div></div>
+            <div class="skill" style="--val:65%"><div class="icon">PR</div><div class="bar"></div></div>
+            <div class="skill" style="--val:72%"><div class="icon">FG</div><div class="bar"></div></div>
+            <div class="skill" style="--val:60%"><div class="icon">BL</div><div class="bar"></div></div>
+            <div class="skill" style="--val:55%"><div class="icon">GH</div><div class="bar"></div></div>
+            <!-- Du kannst beliebig ergänzen -->
+          </div>
+          <div class="hob-wrap">
+            <h3>Hobbys</h3>
+            <div class="hob-grid">
+              <div class="hob">Fotografie</div>
+              <div class="hob">Musik</div>
+              <div class="hob">Outdoor</div>
+              <div class="hob">Handwerk</div>
+              <div class="hob">Technik</div>
+              <div class="hob">Sport</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DESIGN (Slideshow synchron) -->
+    <section class="section" id="design" aria-label="Design">
+      <div class="corner"><span class="dot"></span><span class="chapter">03 / DESIGN</span></div>
+      <div class="wrap">
+        <div id="slideText">
+          <div class="pill">Mockup <span id="slideIndex">1</span>/8</div>
+          <h2 id="slideTitle" style="font-size:30px;margin-top:8px">Projekt‑Headline 1</h2>
+          <p id="slideSub" style="max-width:60ch">Kurzer Subtext zum Projekt. Rolle, Ziel, Ergebnis.</p>
+          <p class="muted" id="slideTools" style="margin-top:6px"><strong>Tools:</strong> Photoshop, InDesign</p>
+          <div class="slide-controls" style="margin-top:14px"><button class="ctrl" id="prev">⟵ Zurück</button><button class="ctrl" id="next">Weiter ⟶</button></div>
+        </div>
+        <figure class="slide-figure"><img id="slideImg" src="https://placehold.co/1600x1000" alt="Mockup (Platzhalter)" /></figure>
+      </div>
+    </section>
+
+    <!-- FOTO (kleinere Kacheln, 4er-Gruppen + 3x3/2x2) -->
+    <section class="section" id="photo" aria-label="Fotografie">
+      <div class="corner"><span class="dot"></span><span class="chapter">04 / FOTOGRAFIE</span></div>
+      <div class="wrap">
+        <div class="grid-photo">
+          <!-- Akzentkachel (3x3) mit Headline/Subtext -->
+          <div class="sq big accent">
+            <div class="accent-inner">
+              <h3>Fotografie</h3>
+              <p>Menschen, Industrie, ehrliches Licht. Minimal inszeniert – maximal echt.</p>
+            </div>
+          </div>
+          <!-- 3x3 Fotos -->
+          <div class="sq big"><img src="https://placehold.co/900" alt="Foto groß"></div>
+          <div class="sq big"><img src="https://placehold.co/900" alt="Foto groß"></div>
+          <!-- Vierergruppe klein (2x2) -->
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+          <!-- weitere 4er Gruppe -->
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+          <!-- noch ein 3x3 -->
+          <div class="sq big"><img src="https://placehold.co/900" alt="Foto groß"></div>
+          <!-- Rest klein in Viererblöcken -->
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+          <div class="sq sm"><img src="https://placehold.co/600" alt="Foto klein"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- KONTAKT -->
+    <section class="section" id="contact" aria-label="Kontakt">
+      <div class="corner"><span class="dot"></span><span class="chapter">05 / KONTAKT</span></div>
+      <div class="wrap" style="grid-template-columns:1fr 1fr;align-items:center">
+        <div>
+          <div class="thanks">Danke fürs Anschauen!</div>
+          <p style="max-width:60ch">Projektanfrage oder Kennenlernen? Ich freue mich über eine Nachricht.</p>
+          <div style="height:16px"></div>
+          <a class="btn" href="mailto:meiering.louis97@gmail.com">E‑Mail an Louis</a>
+        </div>
+        <div class="card" style="background:var(--accent);color:#fff">
+          <h3>Kontakt</h3>
+          <p><strong>E‑Mail:</strong> <a style="color:#fff;text-decoration:underline" href="mailto:meiering.louis97@gmail.com">meiering.louis97@gmail.com</a></p>
+          <p><strong>Telefon:</strong> +49 178 5300 541</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const scroller=document.getElementById('scroller');
+    scroller.addEventListener('wheel',(e)=>{if(Math.abs(e.deltaY)>Math.abs(e.deltaX)){scroller.scrollLeft+=e.deltaY;e.preventDefault();}},{passive:false});
+    const sections=[...document.querySelectorAll('.section')];
+    const buttons=[...document.querySelectorAll('.nav button')];
+    buttons.forEach(btn=>btn.addEventListener('click',()=>{const t=document.querySelector(btn.dataset.target); if(t) t.scrollIntoView({behavior:'smooth',inline:'start'});}));
+    const onScroll=()=>{const center=scroller.scrollLeft+window.innerWidth/2;let idx=0,min=1e9;sections.forEach((s,i)=>{const mid=s.offsetLeft+s.offsetWidth/2;const d=Math.abs(center-mid);if(d<min){min=d;idx=i}});buttons.forEach((b,i)=>b.classList.toggle('active',i===idx));};
+    scroller.addEventListener('scroll',onScroll); window.addEventListener('resize',onScroll);
+    window.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight')scroller.scrollBy({left:window.innerWidth,behavior:'smooth'});if(e.key==='ArrowLeft')scroller.scrollBy({left:-window.innerWidth,behavior:'smooth'});});
+
+    // Slideshow (8 Mockups)
+    const slides=[
+      {src:'https://placehold.co/1600x1000',title:'Projekt‑Headline 1',sub:'Subtext 1 – kurz und prägnant.',tools:'Photoshop, InDesign'},
+      {src:'https://placehold.co/1600x1000',title:'Projekt‑Headline 2',sub:'Subtext 2 – Ergebnis & Rolle.',tools:'Illustrator, Photoshop'},
+      {src:'https://placehold.co/1600x1000',title:'Projekt‑Headline 3',sub:'Subtext 3 – Print / Digital.',tools:'InDesign, Lightroom'},
+      {src:'https://placehold.co/1600x1000',title:'Projekt‑Headline 4',sub:'Subtext 4 – Key Visual.',tools:'Figma'},
+      {src:'https://placehold.co/1600x1000',title:'Projekt‑Headline 5',sub:'Subtext 5 – Kampagnenvisual.',tools:'Photoshop'},
+      {src:'https://placehold.co/1600x1000',title:'Projekt‑Headline 6',sub:'Subtext 6 – Branding.',tools:'Illustrator'},
+      {src:'https://placehold.co/1600x1000',title:'Projekt‑Headline 7',sub:'Subtext 7 – Editorial.',tools:'InDesign'},
+      {src:'https://placehold.co/1600x1000',title:'Projekt‑Headline 8',sub:'Subtext 8 – Webassets.',tools:'Figma, Photoshop'}
+    ];
+    let i=0; const img=document.getElementById('slideImg');
+    const title=document.getElementById('slideTitle');
+    const sub=document.getElementById('slideSub');
+    const tools=document.getElementById('slideTools');
+    const idx=document.getElementById('slideIndex');
+    function render(){const s=slides[i]; img.src=s.src; title.textContent=s.title; sub.textContent=s.sub; tools.innerHTML='<strong>Tools:</strong> '+s.tools; idx.textContent=(i+1);} render();
+    document.getElementById('next').onclick=()=>{i=(i+1)%slides.length;render()};
+    document.getElementById('prev').onclick=()=>{i=(i-1+slides.length)%slides.length;render()};
+  </script>
+</body>
+</html>
