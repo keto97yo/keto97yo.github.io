@@ -10,13 +10,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#e9e4df; --fg:#141413; --muted:#6f6a66; 
+      --bg:#e9e4df; --fg:#141413; --muted:#6f6a66;
       --accent:#ff3b2e; --accent-ink:#fff5f4; --card:#ffffff;
       --gap:24px; --radius:18px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
-    body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg)}
+    body{
+      margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      background:var(--bg);color:var(--fg)
+    }
     h1,h2,h3{margin:0 0 10px 0;line-height:1.05}
     p{margin:0 0 8px 0}
     a{color:inherit}
@@ -24,10 +27,12 @@
     .btn{appearance:none;border:none;background:var(--accent);color:#fff;padding:12px 16px;border-radius:999px;font-weight:800;letter-spacing:.02em;cursor:pointer;box-shadow:0 6px 20px rgba(255,59,46,.25)}
     .chip{display:inline-flex;align-items:center;padding:7px 11px;border-radius:999px;border:1.5px solid var(--fg);font-weight:700}
 
+    /* Snap Scroller */
     .scroller{display:flex;height:100vh;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth}
     .section{min-width:100vw;height:100%;position:relative;scroll-snap-align:start;display:grid}
 
-    .corner{position:absolute;top:14px;left:18px;display:flex;gap:10px;align-items:center}
+    /* Corner chapter */
+    .corner{position:absolute;top:14px;left:18px;display:flex;gap:10px;align-items:center;z-index:3}
     .dot{width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 6px var(--accent-ink)}
     .chapter{font-weight:900;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
 
@@ -43,34 +48,58 @@
 
     /* ABOUT */
     #about .wrap{grid-template-columns:440px 1fr;align-items:center}
-    .avatar{border-radius:16px;aspect-ratio:3/4;object-fit:cover;width:100%;background:#d6d2cf}
+    /* Weißer Rand weg: keine Card um das Bild, direkt das Bild */
+    .avatar{
+      border-radius:16px;aspect-ratio:3/4;object-fit:cover;width:100%;
+      background:#d6d2cf;box-shadow:0 10px 26px rgba(0,0,0,.16)
+    }
     .accent-block{background:var(--accent);color:#fff;border-radius:14px;padding:14px 16px;font-weight:800;letter-spacing:.03em;display:inline-block}
 
-    /* SKILLS – kompakt & mit Hobbys */
-    #skills .wrap{grid-template-columns:1fr}
-    .skills-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+    /* SKILLS & HOBBYS – nebeneinander */
+    #skills .wrap{grid-template-columns:1fr 1fr;align-items:start}
+    .skills-col h2,.hobby-col h2{font-size:30px}
+    .skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:10px}
     .skill{background:#fff;border:1px solid #e6e1dc;border-radius:14px;padding:12px;display:grid;grid-template-columns:1fr 8px;gap:8px;align-items:center;min-height:92px}
     .skill .icon{display:grid;place-items:center;aspect-ratio:1;border-radius:10px;background:var(--accent-ink)}
     .skill .icon img{max-width:60%;height:auto;display:block}
     .bar{height:100%;width:8px;border-radius:8px;background:#eee;position:relative;overflow:hidden}
     .bar::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:var(--val,60%);background:var(--accent)}
-    .hob-wrap{margin-top:12px}
-    .hob-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
-    .hob{background:var(--accent-ink);border:1.5px solid var(--accent);border-radius:999px;padding:8px 10px;font-weight:700;text-align:center}
+    .hob-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:10px}
+    .hob{background:var(--accent-ink);border:1.5px solid var(--accent);border-radius:999px;padding:10px 12px;font-weight:700;text-align:center}
 
-    /* DESIGN */
-    #design .wrap{grid-template-columns:.8fr 1.2fr;align-items:center}
-    .slide-figure{background:#d9d5d1;border-radius:16px;display:grid;place-items:center;aspect-ratio:16/10;overflow:hidden}
-    .slide-figure img{max-width:100%;max-height:100%;object-fit:contain;display:block;transition:opacity .35s ease, transform .35s ease}
-    .slide-controls{display:flex;gap:10px}
+    /* DESIGN – roter Bereich mit heller Textbox */
+    #design{background:var(--accent);color:#1a1a1a}
+    /* obere Leiste in Grundfarbe, damit Kapitel/Label sichtbar bleiben */
+    #design .topbar{position:absolute;inset:0 0 auto 0;height:56px;background:var(--bg);z-index:1}
+    #design .corner{z-index:2} /* bleibt über der Topbar */
+    #design .wrap{grid-template-columns:.9fr 1.1fr;align-items:center;z-index:2;position:relative}
+    .design-text{
+      background:var(--bg);border-radius:16px;padding:18px 20px;
+      box-shadow:0 10px 28px rgba(0,0,0,.15)
+    }
+    .design-text h2{color:var(--accent);font-size:30px;margin-top:6px}
+    .design-text p{color:#444}
+    .design-tools{color:#666;margin-top:6px}
+    .slide-figure{
+      border-radius:16px;display:grid;place-items:center;aspect-ratio:16/10;overflow:hidden;
+      background:#d9d5d1;box-shadow:0 12px 36px rgba(0,0,0,.25)
+    }
+    .slide-figure img{
+      width:100%;height:auto;object-fit:contain;display:block;
+      transition:opacity .35s ease, transform .45s cubic-bezier(.22,.61,.36,1)
+    }
+    .slide-controls{display:flex;gap:10px;margin-top:14px}
     .ctrl{background:transparent;border:2px solid var(--fg);border-radius:999px;padding:8px 12px;font-weight:800;cursor:pointer}
     .pill{display:inline-block;background:var(--accent);color:#fff;border-radius:999px;padding:3px 9px;font-size:12px;font-weight:800}
 
-    /* FOTO – kleinere Kacheln, 12-Spalten, sm=2x2, big=3x3 */
+    /* FOTO – Hover-Effekt */
     #photo .wrap{grid-template-columns:1fr}
     .grid-photo{display:grid;grid-template-columns:repeat(12,1fr);gap:8px;grid-auto-flow:dense}
     .sq{aspect-ratio:1;border-radius:10px;background:#cfcac6;overflow:hidden;position:relative}
-    .sq img{width:100%;height:100%;object-fit:cover}
+    .sq img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+    .sq::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.0);transition:background .35s ease}
+    .sq:hover img{transform:scale(1.05)}
+    .sq:hover::after{background:rgba(255,255,255,.06)}
     .sm{grid-column:span 2;grid-row:span 2}
     .big{grid-column:span 3;grid-row:span 3}
     .accent{background:var(--accent);color:#fff;display:flex;align-items:flex-end}
@@ -85,7 +114,7 @@
     @media (max-width:1100px){
       #about .wrap,#skills .wrap,#design .wrap,#photo .wrap,#contact .wrap{grid-template-columns:1fr;align-content:start;overflow:auto}
       .skills-grid{grid-template-columns:repeat(3,1fr)}
-      .hob-grid{grid-template-columns:repeat(3,1fr)}
+      .hob-grid{grid-template-columns:repeat(2,1fr)}
       .grid-photo{grid-template-columns:repeat(6,1fr)}
     }
   </style>
@@ -105,9 +134,8 @@
     <section class="section" id="about" aria-label="About">
       <div class="corner"><span class="dot"></span><span class="chapter">01 / ABOUT</span></div>
       <div class="wrap">
-        <div class="card">
-          <img class="avatar" src="/images/portrait.webp" alt="Portrait von Louis Meiering" />
-        </div>
+        <!-- Weißer Rand entfernt: kein .card Container -->
+        <div><img class="avatar" id="avatar" src="/images/portrait.webp" alt="Portrait von Louis Meiering" /></div>
         <div>
           <span class="accent-block">Louis Meiering</span>
           <h1 style="font-size:clamp(34px,5vw,72px);margin-top:8px">Design & Fotografie</h1>
@@ -128,13 +156,12 @@
       </div>
     </section>
 
-    <!-- 02 SKILLS -->
+    <!-- 02 SKILLS & HOBBYS nebeneinander -->
     <section class="section" id="skills" aria-label="Skills">
       <div class="corner"><span class="dot"></span><span class="chapter">02 / SKILLS</span></div>
       <div class="wrap">
-        <div>
-          <h2 style="font-size:30px">Werkzeuge & Stärken</h2>
-          <p style="color:var(--muted)">Ersetze oder ergänze Werte über <code>--val:%</code>.</p>
+        <div class="skills-col">
+          <h2>Werkzeuge & Stärken</h2>
           <div class="skills-grid">
             <div class="skill" style="--val:95%"><div class="icon"><img src="/images/icon_ps.png" alt="Photoshop"></div><div class="bar"></div></div>
             <div class="skill" style="--val:90%"><div class="icon"><img src="/images/icon_ai.png" alt="Illustrator"></div><div class="bar"></div></div>
@@ -143,16 +170,16 @@
             <div class="skill" style="--val:70%"><div class="icon"><img src="/images/icon_ae.png" alt="After Effects"></div><div class="bar"></div></div>
             <div class="skill" style="--val:75%"><div class="icon"><img src="/images/icon_blender.png" alt="Blender"></div><div class="bar"></div></div>
           </div>
-          <div class="hob-wrap">
-            <h3>Hobbys</h3>
-            <div class="hob-grid">
-              <div class="hob">Fotografie</div>
-              <div class="hob">Musik</div>
-              <div class="hob">Outdoor</div>
-              <div class="hob">Handwerk</div>
-              <div class="hob">Technik</div>
-              <div class="hob">Sport</div>
-            </div>
+        </div>
+        <div class="hobby-col">
+          <h2>Hobbys</h2>
+          <div class="hob-grid">
+            <div class="hob">Fotografie</div>
+            <div class="hob">Musik</div>
+            <div class="hob">Outdoor</div>
+            <div class="hob">Handwerk</div>
+            <div class="hob">Technik</div>
+            <div class="hob">Sport</div>
           </div>
         </div>
       </div>
@@ -160,14 +187,17 @@
 
     <!-- 03 DESIGN (Slideshow: 9 Mockups, auto + manuell) -->
     <section class="section" id="design" aria-label="Design">
+      <!-- Topbar in Grundfarbe -->
+      <div class="topbar" aria-hidden="true"></div>
       <div class="corner"><span class="dot"></span><span class="chapter">03 / DESIGN</span></div>
+
       <div class="wrap">
-        <div id="slideText">
+        <div class="design-text" id="slideText">
           <div class="pill">Mockup <span id="slideIndex">1</span>/9</div>
-          <h2 id="slideTitle" style="font-size:30px;margin-top:8px;color:var(--accent)">GetGenius Image Brochure</h2>
-          <p id="slideSub" style="max-width:60ch">Freelance Arbeit für ITNT Media Group</p>
-          <p class="muted" id="slideTools" style="margin-top:6px"><strong>Tools:</strong> KI-Bildgenerierung, Photoshop, InDesign</p>
-          <div class="slide-controls" style="margin-top:14px">
+          <h2 id="slideTitle">GetGenius Image Brochure</h2>
+          <p id="slideSub">Freelance Arbeit für ITNT Media Group</p>
+          <p class="design-tools" id="slideTools"><strong>Tools:</strong> KI-Bildgenerierung, Photoshop, InDesign</p>
+          <div class="slide-controls">
             <button class="ctrl" id="prev">⟵ Zurück</button>
             <button class="ctrl" id="next">Weiter ⟶</button>
           </div>
@@ -246,7 +276,22 @@
     scroller.addEventListener('scroll',onScroll); window.addEventListener('resize',onScroll);
     window.addEventListener('keydown',(e)=>{if(e.key==='ArrowRight')scroller.scrollBy({left:window.innerWidth,behavior:'smooth'});if(e.key==='ArrowLeft')scroller.scrollBy({left:-window.innerWidth,behavior:'smooth'});});
 
-    // Slideshow (9 Mockups) – auto + manuell, sanfter Slide+Fade
+    // Parallax (sehr subtil) für Portrait beim Scrollen über den ABOUT-Abschnitt
+    const about=document.getElementById('about');
+    const avatar=document.getElementById('avatar');
+    function parallax(){
+      const start=about.offsetLeft, end=start+about.offsetWidth;
+      const x=scroller.scrollLeft;
+      if(x>=start-50 && x<=end+50){
+        const ratio=(x-start)/about.offsetWidth; // -0.0 .. 1.0
+        const ty=(ratio-0.5)*16; // -8..+8px
+        avatar.style.transform=`translateY(${ty}px)`;
+      }
+      requestAnimationFrame(()=>{}); // noop to keep smoothness
+    }
+    scroller.addEventListener('scroll',parallax);
+
+    // Slideshow (9 Mockups) – auto + manuell, sanfter Slide+Fade+Mini-Zoom
     const slides=[
       {src:'/images/mu_ggmag.webp', title:'GetGenius Image Brochure', subtitle:'Freelance Arbeit für ITNT Media Group', tools:'KI-Bildgenerierung, Photoshop, InDesign'},
       {src:'/images/mu_kaaemo.webp', title:'Einladungsflyer EMO Hannover', subtitle:'In Anstellung bei KAAST Werkzeugmaschinen GmbH', tools:'InDesign, Illustrator, Photoshop'},
@@ -259,24 +304,23 @@
       {src:'/images/mu_steinburg.webp', title:'Logo SG STEINBURG NORD', subtitle:'Kundenarbeit von Next Kollektiv GbR', tools:'Illustrator'}
     ];
     let i=0, autoTimer=null, userInteracted=false;
-    const img=document.getElementById('slideImg');
+    const slideImg=document.getElementById('slideImg');
     const h2=document.getElementById('slideTitle');
     const sub=document.getElementById('slideSub');
     const tools=document.getElementById('slideTools');
     const idx=document.getElementById('slideIndex');
 
     function render(dir=1){
-      const s=slides[i];
-      // leichte Slide+Fade
-      img.style.opacity=0; img.style.transform=`translateX(${dir*12}px)`;
-      h2.style.opacity=0; h2.style.transform=`translateY(6px)`;
-      sub.style.opacity=0; sub.style.transform=`translateY(6px)`;
-      tools.style.opacity=0; tools.style.transform=`translateY(6px)`;
+      // out animation
+      slideImg.style.opacity=0; slideImg.style.transform=`translateX(${dir*14}px) scale(0.995)`;
+      [h2,sub,tools].forEach(el=>{el.style.opacity=0; el.style.transform='translateY(8px)';});
       setTimeout(()=>{
-        img.src=s.src; h2.textContent=s.title; sub.textContent=s.subtitle; tools.innerHTML='<strong>Tools:</strong> '+s.tools; idx.textContent=(i+1);
-        img.style.opacity=1; img.style.transform='translateX(0)';
+        const s=slides[i];
+        slideImg.src=s.src; h2.textContent=s.title; sub.textContent=s.subtitle; tools.innerHTML='<strong>Tools:</strong> '+s.tools; idx.textContent=(i+1);
+        // in animation
+        slideImg.style.opacity=1; slideImg.style.transform='translateX(0) scale(1)';
         [h2,sub,tools].forEach(el=>{el.style.opacity=1; el.style.transform='translateY(0)';});
-      },180);
+      },170);
     }
     function next(){ i=(i+1)%slides.length; render(+1); }
     function prev(){ i=(i-1+slides.length)%slides.length; render(-1); }
