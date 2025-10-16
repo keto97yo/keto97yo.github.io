@@ -1,210 +1,396 @@
-<section id="design" class="slide-section">
-  <div class="slide-container">
-    <div class="slide-text">
-      <h2 id="slideTitle">GetGenius Image Brochure</h2>
-      <h3 id="slideSubtitle">Freelance Arbeit für ITNT Media Group</h3>
-      <p id="slideTools">KI-Bildgenerierung, Photoshop, InDesign</p>
-      <div class="slide-buttons">
-        <button id="prevBtn">←</button>
-        <button id="nextBtn">→</button>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Portfolio von Louis Meiering – Design, Fotografie und kreative Projekte." />
+  <title>Louis Meiering – Portfolio</title>
+  <style>
+    :root {
+      --accent: #ff432e;
+      --bg: #e8e3de;
+      --dark: #333;
+      --mid: #777;
+      --light: #f5f4f2;
+    }
+    * {box-sizing: border-box; margin: 0; padding: 0;}
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--dark);
+      background: var(--bg);
+      overflow-x: scroll;
+      overflow-y: hidden;
+      display: flex;
+      scroll-snap-type: x mandatory;
+      height: 100vh;
+    }
+    section {
+      flex: 0 0 100vw;
+      height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+    .wrap {
+      width: 85%;
+      max-width: 1500px;
+      display: grid;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    /* --- Navigation dots --- */
+    nav {
+      position: fixed;
+      top: 50%;
+      right: 30px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 100;
+    }
+    nav a {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--mid);
+      display: block;
+      transition: background 0.3s, transform 0.2s;
+    }
+    nav a.active, nav a:hover {
+      background: var(--accent);
+      transform: scale(1.2);
+    }
+
+    h1 {font-size: 3rem; margin-bottom: 1rem;}
+    h2 {font-size: 2.2rem; margin-bottom: .5rem;}
+    h3 {font-size: 1.2rem; margin-bottom: 1rem; font-weight: 500;}
+    p {color: var(--mid); line-height: 1.6;}
+
+    button, .btn {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.8rem 1.6rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      text-decoration: none;
+    }
+    button:hover, .btn:hover {background: #e63622;}
+
+    /* --- ABOUT --- */
+    #about .wrap {
+      grid-template-columns: 1fr 1fr;
+    }
+    #about img.avatar {
+      width: 100%;
+      border-radius: 18px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      object-fit: cover;
+    }
+    #about .info h1 {color: var(--accent);}
+    #about .info ul {
+      list-style: none;
+      margin-top: 1rem;
+    }
+    #about .info li {margin-bottom: 0.4rem;}
+
+    /* --- SKILLS --- */
+    #skills .wrap {
+      grid-template-columns: repeat(6, 1fr);
+      text-align: center;
+    }
+    .skill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .skill img {
+      width: 60px; height: 60px;
+      margin-bottom: 1rem;
+    }
+    .bar {
+      width: 6px;
+      height: 100px;
+      background: #ccc;
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
+    }
+    .bar::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: var(--val);
+      background: var(--accent);
+      border-radius: 3px;
+    }
+    .hobbies {
+      grid-column: 1 / -1;
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .hobbies span {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.4rem 1rem;
+      border-radius: 1rem;
+      margin: 0.3rem;
+      font-size: 0.9rem;
+    }
+
+    /* --- DESIGN (Slideshow) --- */
+    #design .wrap {
+      grid-template-columns: 0.8fr 1.2fr;
+      align-items: center;
+    }
+    #design .slide-figure {
+      border-radius: 16px;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #d9d5d1;
+    }
+    #design .slide-figure img {
+      width: 100%;
+      height: auto;
+      transition: opacity 0.3s ease;
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    #design #slideText {animation: fadeIn 0.6s ease;}
+    #design h2 {color: var(--accent);}
+    #design h3 {color: #333;}
+    #design p {color: #777;}
+    .slide-buttons {margin-top: 2rem;}
+    .slide-buttons button {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 42px;
+      height: 42px;
+      font-size: 1.2rem;
+      margin-right: 0.6rem;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .slide-buttons button:hover {background: #e63622;}
+    .fade {
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* --- PHOTOGRAPHY --- */
+    #photo .wrap {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 100px;
+      gap: 8px;
+    }
+    #photo .tile {
+      border-radius: 10px;
+      overflow: hidden;
+      background: #ccc;
+    }
+    #photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    #photo .accent {
+      grid-column: span 4;
+      grid-row: span 4;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 1.5rem;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    /* --- CONTACT --- */
+    #contact {
+      text-align: center;
+      background: var(--light);
+    }
+    #contact h2 {color: var(--accent);}
+  </style>
+</head>
+
+<body>
+  <nav>
+    <a href="#about" class="active"></a>
+    <a href="#skills"></a>
+    <a href="#design"></a>
+    <a href="#photo"></a>
+    <a href="#contact"></a>
+  </nav>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap">
+      <img class="avatar" src="/images/portrait.webp" alt="Portrait von Louis Meiering">
+      <div class="info">
+        <h1>Louis Meiering</h1>
+        <p>Designer, Fotograf und kreativer Kopf mit Leidenschaft für Ästhetik, Konzeption und visuelle Kommunikation.</p>
+        <ul>
+          <li><strong>Email:</strong> <a href="mailto:meiering.louis97@gmail.com">meiering.louis97@gmail.com</a></li>
+          <li><strong>Ort:</strong> Deutschland</li>
+        </ul>
+        <a href="mailto:meiering.louis97@gmail.com" class="btn">Kontakt aufnehmen</a>
       </div>
     </div>
-    <div class="slide-image">
-      <img id="slideImg" src="/images/mu_ggmag.webp" alt="Mockup">
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="wrap">
+      <div class="skill" style="--val:95%">
+        <img src="/images/icon_ps.png" alt="Photoshop">
+        <div class="bar"></div>
+      </div>
+      <div class="skill" style="--val:90%">
+        <img src="/images/icon_ai.png" alt="Illustrator">
+        <div class="bar"></div>
+      </div>
+      <div class="skill" style="--val:85%">
+        <img src="/images/icon_id.png" alt="InDesign">
+        <div class="bar"></div>
+      </div>
+      <div class="skill" style="--val:80%">
+        <img src="/images/icon_pr.png" alt="Premiere Pro">
+        <div class="bar"></div>
+      </div>
+      <div class="skill" style="--val:70%">
+        <img src="/images/icon_ae.png" alt="After Effects">
+        <div class="bar"></div>
+      </div>
+      <div class="skill" style="--val:75%">
+        <img src="/images/icon_blender.png" alt="Blender">
+        <div class="bar"></div>
+      </div>
+      <div class="hobbies">
+        <h3>Hobbys & Interessen</h3>
+        <span>Fotografie</span>
+        <span>Musik</span>
+        <span>3D Design</span>
+        <span>Illustration</span>
+        <span>Film & Schnitt</span>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<script>
-const slides = [
-  {
-    src: "/images/mu_ggmag.webp",
-    title: "GetGenius Image Brochure",
-    subtitle: "Freelance Arbeit für ITNT Media Group",
-    tools: "KI-Bildgenerierung, Photoshop, InDesign"
-  },
-  {
-    src: "/images/mu_kaaemo.webp",
-    title: "Einladungsflyer EMO Hannover",
-    subtitle: "In Anstellung bei KAAST Werkzeugmaschinen GmbH",
-    tools: "InDesign, Illustrator, Photoshop"
-  },
-  {
-    src: "/images/mu_kaawebemo.webp",
-    title: "Website Banner EMO2023",
-    subtitle: "In Anstellung bei KAAST Werkzeugmaschinen GmbH",
-    tools: "Blender, Photoshop, WIX"
-  },
-  {
-    src: "/images/mu_nkbc.webp",
-    title: "Visitenkarte Next Kollektiv",
-    subtitle: "Next Kollektiv GbR",
-    tools: "Illustrator"
-  },
-  {
-    src: "/images/mu_nkdorf.webp",
-    title: "Wasbeker Dorfzeitung",
-    subtitle: "Selbstständige Publikation unter Next Kollektiv GbR",
-    tools: "Photoshop, Illustrator, InDesign, Fotografie, Vermarktung"
-  },
-  {
-    src: "/images/mu_nkgribbohm.webp",
-    title: "Visitenkarte Landgalerie Gribbohm",
-    subtitle: "Kundenarbeit von Next Kollektiv GbR",
-    tools: "Illustrator"
-  },
-  {
-    src: "/images/mu_nksponsor.webp",
-    title: "Sponsoringangebot TSV Heiligenstedten",
-    subtitle: "Kundenarbeit von Next Kollektiv GbR",
-    tools: "InDesign"
-  },
-  {
-    src: "/images/mu_oyman.webp",
-    title: "Logo Oymans Helfende Hände",
-    subtitle: "Kundenarbeit von Next Kollektiv GbR",
-    tools: "Illustrator"
-  },
-  {
-    src: "/images/mu_steinburg.webp",
-    title: "Logo SG STEINBURG NORD",
-    subtitle: "Kundenarbeit von Next Kollektiv GbR",
-    tools: "Illustrator"
+  <!-- DESIGN -->
+  <section id="design">
+    <div class="wrap">
+      <div id="slideText">
+        <h2 id="slideTitle">GetGenius Image Brochure</h2>
+        <h3 id="slideSubtitle">Freelance Arbeit für ITNT Media Group</h3>
+        <p id="slideTools">KI-Bildgenerierung, Photoshop, InDesign</p>
+        <div class="slide-buttons">
+          <button id="prevBtn">←</button>
+          <button id="nextBtn">→</button>
+        </div>
+      </div>
+      <figure class="slide-figure">
+        <img id="slideImg" src="/images/mu_ggmag.webp" alt="Mockup">
+      </figure>
+    </div>
+  </section>
+
+  <!-- PHOTOGRAPHY -->
+  <section id="photo">
+    <div class="wrap">
+      <div class="tile accent">
+        <h2>Fotografie</h2>
+        <p>Inspiriert von Licht, Struktur und Authentizität. Jeder Moment ist ein visuelles Fragment meiner Perspektive.</p>
+      </div>
+      <div class="tile"><img src="/images/photo_l_1.webp" alt=""></div>
+      <div class="tile"><img src="/images/photo_s_1.webp" alt=""></div>
+      <div class="tile"><img src="/images/photo_s_2.webp" alt=""></div>
+      <div class="tile"><img src="/images/photo_s_3.webp" alt=""></div>
+      <div class="tile"><img src="/images/photo_s_4.webp" alt=""></div>
+      <div class="tile"><img src="/images/photo_l_2.webp" alt=""></div>
+      <div class="tile"><img src="/images/photo_s_5.webp" alt=""></div>
+      <div class="tile"><img src="/images/photo_s_6.webp" alt=""></div>
+      <div class="tile"><img src="/images/photo_s_7.webp" alt=""></div>
+      <div class="tile"><img src="/images/photo_s_8.webp" alt=""></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2>Danke fürs Anschauen!</h2>
+    <p>Ich freue mich über Feedback oder Projektanfragen.</p>
+    <a href="mailto:meiering.louis97@gmail.com" class="btn">Schreib mir eine Nachricht</a>
+  </section>
+
+  <script>
+  const slides = [
+    {src:'/images/mu_ggmag.webp', title:'GetGenius Image Brochure', subtitle:'Freelance Arbeit für ITNT Media Group', tools:'KI-Bildgenerierung, Photoshop, InDesign'},
+    {src:'/images/mu_kaaemo.webp', title:'Einladungsflyer EMO Hannover', subtitle:'In Anstellung bei KAAST Werkzeugmaschinen GmbH', tools:'InDesign, Illustrator, Photoshop'},
+    {src:'/images/mu_kaawebemo.webp', title:'Website Banner EMO2023', subtitle:'In Anstellung bei KAAST Werkzeugmaschinen GmbH', tools:'Blender, Photoshop, WIX'},
+    {src:'/images/mu_nkbc.webp', title:'Visitenkarte Next Kollektiv', subtitle:'Next Kollektiv GbR', tools:'Illustrator'},
+    {src:'/images/mu_nkdorf.webp', title:'Wasbeker Dorfzeitung', subtitle:'Selbstständige Publikation unter Next Kollektiv GbR', tools:'Photoshop, Illustrator, InDesign, Fotografie, Vermarktung'},
+    {src:'/images/mu_nkgribbohm.webp', title:'Visitenkarte Landgalerie Gribbohm', subtitle:'Kundenarbeit von Next Kollektiv GbR', tools:'Illustrator'},
+    {src:'/images/mu_nksponsor.webp', title:'Sponsoringangebot TSV Heiligenstedten', subtitle:'Kundenarbeit von Next Kollektiv GbR', tools:'InDesign'},
+    {src:'/images/mu_oyman.webp', title:'Logo Oymans Helfende Hände', subtitle:'Kundenarbeit von Next Kollektiv GbR', tools:'Illustrator'},
+    {src:'/images/mu_steinburg.webp', title:'Logo SG STEINBURG NORD', subtitle:'Kundenarbeit von Next Kollektiv GbR', tools:'Illustrator'}
+  ];
+
+  let index = 0;
+  const img = document.getElementById('slideImg');
+  const title = document.getElementById('slideTitle');
+  const subtitle = document.getElementById('slideSubtitle');
+  const tools = document.getElementById('slideTools');
+
+  function showSlide(i) {
+    const s = slides[i];
+    img.classList.add('fade');
+    title.classList.add('fade');
+    subtitle.classList.add('fade');
+    tools.classList.add('fade');
+    setTimeout(() => {
+      img.src = s.src;
+      title.textContent = s.title;
+      subtitle.textContent = s.subtitle;
+      tools.textContent = s.tools;
+      img.classList.remove('fade');
+      title.classList.remove('fade');
+      subtitle.classList.remove('fade');
+      tools.classList.remove('fade');
+    }, 300);
   }
-];
 
-let index = 0;
-const img = document.getElementById("slideImg");
-const title = document.getElementById("slideTitle");
-const subtitle = document.getElementById("slideSubtitle");
-const tools = document.getElementById("slideTools");
-
-function showSlide(i) {
-  const s = slides[i];
-  img.classList.add("fade");
-  title.classList.add("fade");
-  subtitle.classList.add("fade");
-  tools.classList.add("fade");
-
-  setTimeout(() => {
-    img.src = s.src;
-    title.textContent = s.title;
-    subtitle.textContent = s.subtitle;
-    tools.textContent = s.tools;
-
-    img.classList.remove("fade");
-    title.classList.remove("fade");
-    subtitle.classList.remove("fade");
-    tools.classList.remove("fade");
-  }, 300);
-}
-
-document.getElementById("nextBtn").onclick = () => {
-  index = (index + 1) % slides.length;
-  showSlide(index);
-};
-document.getElementById("prevBtn").onclick = () => {
-  index = (index - 1 + slides.length) % slides.length;
-  showSlide(index);
-};
-</script>
-
-<style>
-/* ==== Layout ==== */
-.slide-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background: #e8e3de;
-  overflow: hidden;
-}
-.slide-container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 90%;
-  max-width: 1600px;
-  gap: 5rem;
-}
-.slide-text {
-  flex: 0 0 40%;
-  animation: fadeIn 0.6s ease;
-}
-.slide-image {
-  flex: 0 0 60%;
-}
-.slide-image img {
-  width: 100%;
-  height: auto;
-  border-radius: 16px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-  transition: opacity 0.3s ease;
-}
-
-/* ==== Typography ==== */
-.slide-text h2 {
-  font-size: 2.2rem;
-  color: #ff432e;
-  font-weight: 700;
-  margin: 0 0 0.6rem;
-}
-.slide-text h3 {
-  font-size: 1.2rem;
-  color: #333;
-  font-weight: 500;
-  margin: 0 0 1.2rem;
-}
-.slide-text p {
-  font-size: 1rem;
-  color: #777;
-  line-height: 1.5;
-}
-
-/* ==== Buttons ==== */
-.slide-buttons {
-  margin-top: 2rem;
-}
-.slide-buttons button {
-  background: #ff432e;
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 42px;
-  height: 42px;
-  font-size: 1.2rem;
-  margin-right: 0.6rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-.slide-buttons button:hover {
-  background: #e63622;
-}
-
-/* ==== Animation ==== */
-.fade {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(10px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-
-/* ==== Responsive ==== */
-@media (max-width: 1000px) {
-  .slide-container {
-    flex-direction: column;
-    text-align: center;
-  }
-  .slide-text {
-    flex: unset;
-    width: 100%;
-  }
-  .slide-image {
-    flex: unset;
-    width: 100%;
-  }
-}
-</style>
+  document.getElementById('nextBtn').onclick = () => {
+    index = (index + 1) % slides.length;
+    showSlide(index);
+  };
+  document.getElementById('prevBtn').onclick = () => {
+    index = (index - 1 + slides.length) % slides.length;
+    showSlide(index);
+  };
+  </script>
+</body>
+</html>
